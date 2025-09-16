@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java: [ '21' ]   # add '17' later if you want multi-version testing
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Temurin JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+          cache: maven   # speeds up runs
+
+      - name: Build & test
+        run: mvn -B clean verify
+
+      - name: Celebrate success (Random ASCII 🎉)
+        if: success()
+        run: |
+          case $((RANDOM % 4)) in
+            0)
+              echo "Build passed! 🐻"
+              echo "  _     _"
+              echo " ( ')_(' )  ʙᴇᴀʀ ɢʀɪɴ"
+              echo " /  . .  \\ "
+              echo " |   ^   |"
+              echo " | \\___/ |"
+              echo "  \\_____/ "
+              ;;
+            1)
+              echo "Build passed! 🐧"
+              echo "   .--.  "
+              echo "  |o_o | "
+              echo "  |:_/ | "
+              echo " //   \\ \\ "
+              echo "(|     | )"
+              echo "/'\\_   _/`\\"
+              echo "\\___)=(___/"
+              ;;
+            2)
+              echo "Build passed! 🐱"
+              echo " /\_/\  "
+              echo "( o.o )"
+              echo " > ^ < "
+              ;;
+            3)
+              echo "Build passed! 🚀"
+              echo "    ^"
+              echo "   /^\\"
+              echo "   |-|"
+              echo "   | |"
+              echo "  /===\\"
+              echo "  | : |"
+              echo "  | : |"
+              echo "  '---'"
+              ;;
+          esac
