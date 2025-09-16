@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        java: [ '21' ]   # add '17' later if you want multi-version testing
+        java: [ '21' ]
 
     steps:
       - name: Checkout
@@ -23,16 +23,35 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ matrix.java }}
-          cache: maven   # speeds up runs
+          cache: maven
 
-      - name: Build & test
+      # Runs tests and generates JaCoCo report (jacoco.xml) in the verify phase
+      - name: Build, test & coverage
         run: mvn -B clean verify
 
+      # (Optional) Upload the HTML coverage report as a build artifact so you can download/view it
+      - name: Upload coverage HTML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-html
+          path: target/site/jacoco
+          if-no-files-found: warn
+
+      # Upload coverage to Codecov (no token needed for public repos)
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: target/site/jacoco/jacoco.xml
+          fail_ci_if_error: true
+          # token: ${{ secrets.CODECOV_TOKEN }}  # <- only needed if your repo is private
+
+      # Your rotating ASCII celebration (file-based)
       - name: Celebrate success (Random ASCII 🎉)
         if: success()
         shell: bash
         run: |
           i=$((RANDOM % 4))
-          files=( ".github/ascii/bear.txt" ".github/ascii/penguin.txt" ".github/ascii/cat.txt" ".github/ascii/rocket.txt" )
+          files=( ".github/ascii/bear.txt" ".github/ascii/cat.txt" ".github/ascii/penguin.txt" ".github/ascii/rocket.txt" )
           echo "Build passed!"
           cat "${files[$i]}"
