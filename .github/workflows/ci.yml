@@ -30,42 +30,9 @@ jobs:
 
       - name: Celebrate success (Random ASCII 🎉)
         if: success()
+        shell: bash
         run: |
-          case $((RANDOM % 4)) in
-            0)
-              echo "Build passed! 🐻"
-              echo "  _     _"
-              echo " ( ')_(' )  ʙᴇᴀʀ ɢʀɪɴ"
-              echo " /  . .  \\ "
-              echo " |   ^   |"
-              echo " | \\___/ |"
-              echo "  \\_____/ "
-              ;;
-            1)
-              echo "Build passed! 🐧"
-              echo "   .--.  "
-              echo "  |o_o | "
-              echo "  |:_/ | "
-              echo " //   \\ \\ "
-              echo "(|     | )"
-              echo "/'\\_   _/`\\"
-              echo "\\___)=(___/"
-              ;;
-            2)
-              echo "Build passed! 🐱"
-              echo " /\_/\  "
-              echo "( o.o )"
-              echo " > ^ < "
-              ;;
-            3)
-              echo "Build passed! 🚀"
-              echo "    ^"
-              echo "   /^\\"
-              echo "   |-|"
-              echo "   | |"
-              echo "  /===\\"
-              echo "  | : |"
-              echo "  | : |"
-              echo "  '---'"
-              ;;
-          esac
+          i=$((RANDOM % 4))
+          files=( ".github/ascii/bear.txt" ".github/ascii/penguin.txt" ".github/ascii/cat.txt" ".github/ascii/rocket.txt" )
+          echo "Build passed!"
+          cat "${files[$i]}"
