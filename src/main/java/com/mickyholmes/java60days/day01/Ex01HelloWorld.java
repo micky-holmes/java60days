@@ -1,7 +1,7 @@
 package com.mickyholmes.java60days.day01;
 
-public class Exercise01HelloWorld {
-    public static void main(String[] args) {
+public class Ex01HelloWorld {
+    public static void run() {
         System.out.println("Hello world!");
     }
 }
