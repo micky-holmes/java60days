@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class Ex02VariableManipulationTest {
 
+    // this captures output to console. not the correct approach just proof of concept
+
     @Test
     void manipulateVariables_printsExpectedContent() {
         // capture System.out
